@@ -22,7 +22,6 @@ module.exports = function (grunt) {
                     port: 9000,
                     base: 'dist',
                     hostname: '0.0.0.0',
-                    keepalive: true,
                     middleware: function(connect, options) {
                         return [
                         connect.static(String(options.base)),
@@ -104,12 +103,28 @@ module.exports = function (grunt) {
                     { src: 'jquery-ui/themes/base/images', dest: '<%= bootstrap.dist %>/libs/css/images'}
                 ]
             }
+        },
+        karma: {
+            unit: {
+                configFile: '<%= bootstrap.test %>/karma.unit.js'
+            }
+        },
+        protractor: {
+            options: {
+                configFile: '<%= bootstrap.test %>/protractor.conf.js',
+                keepAlive: false
+            },
+            run: {}
         }
     });
 
     grunt.loadNpmTasks('grunt-bowercopy');
+    grunt.loadNpmTasks('grunt-protractor-runner');
 
-    grunt.registerTask('build', ['concat', 'less', 'bowercopy', 'copy']);
+    grunt.registerTask('unit', ['concat', 'less', 'bowercopy', 'copy', 'karma']);
+    grunt.registerTask('e2e', ['concat', 'less', 'bowercopy', 'copy', 'connect', 'protractor']);
+    grunt.registerTask('test', ['concat', 'less', 'bowercopy', 'copy', 'karma', 'connect', 'protractor']);
+    grunt.registerTask('build', ['concat', 'less', 'bowercopy', 'copy', 'test']);
     grunt.registerTask('server', ['build', 'connect']);
 
 
