@@ -1,0 +1,27 @@
+node_modules/
+bower_components/
+.bowerrc
+
+# use glob syntax.
+syntax: glob
+
+# Build output
+dist/
+
+# Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+.pydevproject
+.scala_dependencies
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+*.log
+
+# Mac
+.DS_Store
