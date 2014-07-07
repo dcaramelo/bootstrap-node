@@ -57,7 +57,7 @@ module.exports = function (grunt) {
             index: {
                 expand: true,
                 cwd: '<%= bootstrap.app %>/',
-                src: '*.html',
+                src: '**/*.html',
                 dest: '<%= bootstrap.dist %>/',
                 filter: 'isFile'
             }
@@ -115,17 +115,28 @@ module.exports = function (grunt) {
                 keepAlive: false
             },
             run: {}
+        },
+        watch: {
+            scripts: {
+                files: ['app/js/*.js'],
+                tasks: ['concat']
+            },
+            less: {
+                files: ['app/jstyles/*.less'],
+                tasks: ['less']
+            },
+            html: {
+                files: ['app/**/*.html'],
+                tasks: ['copy']
+            }
         }
     });
-
-    grunt.loadNpmTasks('grunt-bowercopy');
-    grunt.loadNpmTasks('grunt-protractor-runner');
 
     grunt.registerTask('unit', ['concat', 'less', 'bowercopy', 'copy', 'karma']);
     grunt.registerTask('e2e', ['concat', 'less', 'bowercopy', 'copy', 'connect', 'protractor']);
     grunt.registerTask('test', ['concat', 'less', 'bowercopy', 'copy', 'karma', 'connect', 'protractor']);
     grunt.registerTask('build', ['concat', 'less', 'bowercopy', 'copy', 'test']);
-    grunt.registerTask('server', ['build', 'connect']);
+    grunt.registerTask('server', ['concat', 'less', 'bowercopy', 'copy', 'connect', 'watch']);
 
 
 };
